@@ -1,23 +1,19 @@
-class TwQt5 < Formula
+require_relative "common/tw-formula"
+
+class TwQt5 < TwFormula
   homepage "https://www.qt.io/"
   url "https://download.qt.io/official_releases/qt/5.4/5.4.1/single/qt-everywhere-opensource-src-5.4.1.tar.xz"
   mirror "http://qtmirror.ics.com/pub/qtproject/official_releases/qt/5.4/5.4.1/single/qt-everywhere-opensource-src-5.4.1.tar.xz"
   sha256 "1b7eb91e153176ac917f72b6bf443f987abf47c4208cdd43e2307684a7fad860"
 
-  keg_only "TeXworks build dependency."
-  depends_on :macos => :mavericks
-
   depends_on "tw-pkg-config" => :build
   depends_on :xcode => :build
 
   def install
-    ENV["MACOSX_DEPLOYMENT_TARGET"] = "10.9"
-    ENV["PKG_CONFIG"] = Formula["tw-pkg-config"].bin/"pkg-config"
-
     # We really only care about 10.9+. Prevent Qt from being too stubborn.
     inreplace "qtbase/mkspecs/macx-clang/qmake.conf",
               "QMAKE_MACOSX_DEPLOYMENT_TARGET = 10.7",
-              "QMAKE_MACOSX_DEPLOYMENT_TARGET = 10.9"
+              "QMAKE_MACOSX_DEPLOYMENT_TARGET = #{TwFormula::TW_DEPLOYMENT_TARGET}"
 
     # Disable all modules not used by TeXworks.
     args = %W[

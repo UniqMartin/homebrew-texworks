@@ -1,10 +1,9 @@
-class TwPopplerQt4 < Formula
+require_relative "common/tw-formula"
+
+class TwPopplerQt4 < TwFormula
   homepage "http://poppler.freedesktop.org"
   url "http://poppler.freedesktop.org/poppler-0.29.0.tar.xz"
   sha1 "ba3330ab884e6a139ca63dd84d0c1c676f545b5e"
-
-  keg_only "TeXworks build dependency."
-  depends_on :macos => :mavericks
 
   depends_on "tw-pkg-config" => :build
   depends_on "tw-poppler-data" # (outsourced)
@@ -18,9 +17,6 @@ class TwPopplerQt4 < Formula
   depends_on "tw-little-cms2"  # optional
 
   def install
-    ENV["MACOSX_DEPLOYMENT_TARGET"] = "10.9"
-    ENV["PKG_CONFIG"] = Formula["tw-pkg-config"].bin/"pkg-config"
-
     # Required:
     #   * Backend used by TeXworks: --enable-splash-output
     #   * Poppler XPDF headers (?): --enable-xpdf-headers

@@ -1,18 +1,15 @@
-class TwHunspell < Formula
+require_relative "common/tw-formula"
+
+class TwHunspell < TwFormula
   homepage "http://hunspell.sourceforge.net/"
   url "https://downloads.sourceforge.net/hunspell/hunspell-1.3.3.tar.gz"
   sha1 "219b20f305d6690f666ff3864a16e4674908a553"
-
-  keg_only "TeXworks build dependency."
-  depends_on :macos => :mavericks
 
   # hunspell does not prepend $HOME to all USEROODIRs
   # http://sourceforge.net/p/hunspell/bugs/236/
   patch :p0, :DATA
 
   def install
-    ENV["MACOSX_DEPLOYMENT_TARGET"] = "10.9"
-
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--without-ui",

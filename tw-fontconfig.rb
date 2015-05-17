@@ -1,10 +1,9 @@
-class TwFontconfig < Formula
+require_relative "common/tw-formula"
+
+class TwFontconfig < TwFormula
   homepage "http://fontconfig.org/"
   url "http://fontconfig.org/release/fontconfig-2.11.1.tar.bz2"
   sha1 "08565feea5a4e6375f9d8a7435dac04e52620ff2"
-
-  keg_only "TeXworks build dependency."
-  depends_on :macos => :mavericks
 
   depends_on "tw-pkg-config" => :build
   depends_on "tw-freetype"
@@ -16,9 +15,6 @@ class TwFontconfig < Formula
   patch :DATA
 
   def install
-    ENV["MACOSX_DEPLOYMENT_TARGET"] = "10.9"
-    ENV["PKG_CONFIG"] = Formula["tw-pkg-config"].bin/"pkg-config"
-
     system "./configure", "--disable-dependency-tracking",
                           "--disable-silent-rules",
                           "--with-add-fonts=/System/Library/Fonts,/Library/Fonts,~/Library/Fonts",

@@ -1,11 +1,10 @@
-class TwLua < Formula
+require_relative "common/tw-formula"
+
+class TwLua < TwFormula
   homepage "http://www.lua.org/"
   url "http://www.lua.org/ftp/lua-5.2.3.tar.gz"
   sha256 "13c2fb97961381f7d06d5b5cea55b743c163800896fd5c5e2356201d3619002d"
   revision 2
-
-  keg_only "TeXworks build dependency."
-  depends_on :macos => :mavericks
 
   # Be sure to build a dylib, or else runtime modules will pull in another static copy of liblua = crashy
   # See: https://github.com/Homebrew/homebrew/pull/5043
@@ -18,8 +17,6 @@ class TwLua < Formula
   end
 
   def install
-    ENV["MACOSX_DEPLOYMENT_TARGET"] = "10.9"
-
     # Use our CC/CFLAGS to compile.
     inreplace "src/Makefile" do |s|
       s.remove_make_var! "CC"

@@ -1,17 +1,14 @@
-class TwLibtiff < Formula
+require_relative "common/tw-formula"
+
+class TwLibtiff < TwFormula
   homepage "http://www.remotesensing.org/libtiff/"
   url "ftp://ftp.remotesensing.org/pub/libtiff/tiff-4.0.3.tar.gz"
   mirror "http://download.osgeo.org/libtiff/tiff-4.0.3.tar.gz"
   sha256 "ea1aebe282319537fb2d4d7805f478dd4e0e05c33d0928baba76a7c963684872"
 
-  keg_only "TeXworks build dependency."
-  depends_on :macos => :mavericks
-
   depends_on "tw-jpeg"
 
   def install
-    ENV["MACOSX_DEPLOYMENT_TARGET"] = "10.9"
-
     ENV.cxx11
     jpeg = Formula["tw-jpeg"].opt_prefix
     system "./configure", "--disable-dependency-tracking",

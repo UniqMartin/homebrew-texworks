@@ -1,11 +1,10 @@
-class TwQt4 < Formula
+require_relative "common/tw-formula"
+
+class TwQt4 < TwFormula
   homepage "https://www.qt.io/"
   url "https://download.qt.io/official_releases/qt/4.8/4.8.6/qt-everywhere-opensource-src-4.8.6.tar.gz"
   mirror "http://qtmirror.ics.com/pub/qtproject/official_releases/qt/4.8/4.8.6/qt-everywhere-opensource-src-4.8.6.tar.gz"
   sha256 "8b14dd91b52862e09b8e6a963507b74bc2580787d171feda197badfa7034032c"
-
-  keg_only "TeXworks build dependency."
-  depends_on :macos => :mavericks
 
   depends_on "tw-pkg-config" => :build
 
@@ -16,13 +15,10 @@ class TwQt4 < Formula
   end
 
   def install
-    ENV["MACOSX_DEPLOYMENT_TARGET"] = "10.9"
-    ENV["PKG_CONFIG"] = Formula["tw-pkg-config"].bin/"pkg-config"
-
     # We really only care about 10.9+. Prevent Qt from being too stubborn.
     inreplace "mkspecs/unsupported/macx-clang-libc++/qmake.conf",
               "QMAKE_MACOSX_DEPLOYMENT_TARGET = 10.7",
-              "QMAKE_MACOSX_DEPLOYMENT_TARGET = 10.9"
+              "QMAKE_MACOSX_DEPLOYMENT_TARGET = #{TwFormula::TW_DEPLOYMENT_TARGET}"
 
     # The '-make tools' part brings in a lot of GUI tools we do not care about.
     # Unfortunately, we cannot just disable it, as it also provides some useful
