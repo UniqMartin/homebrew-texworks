@@ -1,0 +1,15 @@
+tw-fontconfig   base=fontconfig  commit=6b6e7ef367b98947d363353f3a6bf34f09c7cfa4
+tw-freetype     base=freetype    commit=6b6e7ef367b98947d363353f3a6bf34f09c7cfa4
+tw-hunspell     base=hunspell    commit=6b6e7ef367b98947d363353f3a6bf34f09c7cfa4
+tw-jpeg         base=jpeg        commit=6b6e7ef367b98947d363353f3a6bf34f09c7cfa4
+tw-libpng       base=libpng      commit=6b6e7ef367b98947d363353f3a6bf34f09c7cfa4
+tw-libtiff      base=libtiff     commit=6b6e7ef367b98947d363353f3a6bf34f09c7cfa4
+tw-little-cms2  base=little-cms2 commit=6b6e7ef367b98947d363353f3a6bf34f09c7cfa4
+tw-lua          base=lua         commit=6b6e7ef367b98947d363353f3a6bf34f09c7cfa4
+tw-openjpeg     base=openjpeg    commit=6b6e7ef367b98947d363353f3a6bf34f09c7cfa4
+tw-pkg-config   base=pkg-config  commit=6b6e7ef367b98947d363353f3a6bf34f09c7cfa4
+tw-poppler-data base=poppler     commit=6b6e7ef367b98947d363353f3a6bf34f09c7cfa4
+tw-poppler-qt4  base=poppler     commit=6b6e7ef367b98947d363353f3a6bf34f09c7cfa4
+tw-poppler-qt5  base=poppler     commit=6b6e7ef367b98947d363353f3a6bf34f09c7cfa4
+tw-qt4          base=qt          commit=6b6e7ef367b98947d363353f3a6bf34f09c7cfa4
+tw-qt5          base=qt5         commit=6b6e7ef367b98947d363353f3a6bf34f09c7cfa4
