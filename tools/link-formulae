@@ -1,0 +1,85 @@
+#!/bin/bash
+
+# Creates or updates symbolic links for formulae from a local copy of this
+# repository (Homebrew formulae for TeXworks dependencies) in the user's
+# Homebrew installation. This is especially helpful when these formulae are in
+# active development and not simply tapped via 'brew tap <user>/<repository>'.
+#
+# Usage:
+#
+#   link-formulae
+
+# Exits program with error message.
+die() {
+  echo "Error: ${*}" >&2
+  exit 1
+}
+
+# Check source directory (repository root, parent of 'tools').
+self="${0}"
+[[ "${self}" = /* ]] \
+  || self="${PWD}/${self}"
+source_dir="${self%/*}/.."
+source_dir="$(cd "${source_dir}" && pwd)"
+[[ -n "${source_dir}" && -d "${source_dir}" && -r "${source_dir}" ]] \
+  || die "Expected '${source_dir}' to be a readable directory."
+
+# Determine Homebrew prefix and location of formulae.
+homebrew_prefix="$(brew --prefix)"
+[[ -n "${homebrew_prefix}" && -d "${homebrew_prefix}" ]] \
+  || die "Failed to determine Homebrew prefix."
+formula_dir="${homebrew_prefix}/Library/Formula"
+[[ -d "${formula_dir}" && -w "${formula_dir}" ]] \
+  || die "Expected '${formula_dir}' to be a writable directory."
+
+# Link our formulae.
+formula_prefix=tw-
+count=0
+echo "Source: ${source_dir}"
+echo "Target: ${formula_dir}"
+echo
+echo "Symbols used:"
+echo "  = link is already up-to-date"
+echo "  * updating existing link"
+echo "  + creating new link"
+echo "  ! target exists and is not a symbolic link (conflict?)"
+echo
+echo "Linking formulae:"
+for source_file in "${source_dir}/${formula_prefix}"*.rb ; do
+  # Skip non-existent source (e.g. when no file matches).
+  [[ -e "${source_file}" ]] \
+    || continue
+
+  # Extract formula name from source file name and construct target file name.
+  name="${source_file}"
+  name="${name##*/}"
+  name="${name%.rb}"
+  target_file="${formula_dir}/${name}.rb"
+
+  # Check, update/add symbolic links.
+  let ++count
+  if [[ -L "${target_file}" ]] ; then
+    old_source="$(readlink "${target_file}")"
+    if [[ "${old_source}" = "${source_file}" ]] ; then
+      echo "  = ${name}"
+      continue
+    fi
+    echo "  * ${name}"
+    rm "${target_file}" \
+      || echo "    Failed to remove existing link for '${name}'." >&2
+  elif [[ -e "${target_file}" ]] ; then
+    echo "  ! ${name}"
+    continue
+  else
+    echo "  + ${name}"
+  fi
+  ln -s "${source_file}" "${target_file}" \
+    || echo "    Failed to create new link for '${name}'." >&2
+done
+if [[ "${count}" -eq 0 ]] ; then
+  echo "  (no formulae with prefix '${formula_prefix}' found)"
+fi
+
+# Clean up (remove possibly broken links).
+echo
+brew tap --repair
