@@ -15,9 +15,7 @@ class TwFormula < Formula
   # Augment formula method :install to include a few more things.
   def self.method_added method
     # Check what is being added and patch (but only once).
-    if method != :install || @tw_install_patched
-      return
-    end
+    return if method != :install || @tw_install_patched
     @tw_install_patched = TRUE
 
     # Augment :install from formula with our extended version.
