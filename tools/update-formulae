@@ -1,0 +1,195 @@
+#!/bin/bash
+
+# Helps to update the formulae in this repository (those with the 'tw-' prefix),
+# that are based on counterparts from the official Homebrew repository, as the
+# latter get updated. Also keeps track of the reference formulae with commit ID
+# and commit date.
+#
+# Usage:
+#
+#   update-formulae {--sync|--update}
+
+# Configuration.
+versions_file=VERSIONS
+formula_prefix=tw-
+
+# Exits program with error message.
+die() {
+  echo "Error: ${*}" >&2
+  exit 1
+}
+
+# Process arguments.
+do_update=
+case "${#}:${1}" in
+  1:--sync)
+    # Default mode of operation.
+    ;;
+  1:--update)
+    do_update=t
+    ;;
+  *)
+    die "Usage: ${0##*/} {--sync|--update}"
+    ;;
+esac
+
+# Check our formula directory (repository root, parent of 'tools').
+self="${0}"
+[[ "${self}" = /* ]] \
+  || self="${PWD}/${self}"
+formula_dir="${self%/*}/.."
+formula_dir="$(cd "${formula_dir}" && pwd)"
+[[ -n "${formula_dir}" && -d "${formula_dir}" && -r "${formula_dir}" ]] \
+  || die "Expected '${formula_dir}' to be a readable directory."
+versions_path="${formula_dir}/${versions_file}"
+[[ -f "${versions_path}" && -r "${versions_path}" ]] \
+  || die "Expected '${versions_path}' to be a readable file."
+
+# Determine Homebrew prefix.
+homebrew_prefix="$(brew --prefix)"
+[[ -n "${homebrew_prefix}" && -d "${homebrew_prefix}" ]] \
+  || die "Failed to determine Homebrew prefix."
+
+# Make sure versions file has no unstaged changes.
+versions_dirty="$(git -C "${formula_dir}" diff-files -- "${versions_file}")"
+[[ "${?}" -eq 0 ]] \
+  || die "Failed to determine status of '${versions_path}'."
+[[ -z "${versions_dirty}" ]] \
+  || die "Cannot proceed due to unstaged changes in '${versions_path}'."
+
+# Keep a copy of the original IFS for later.
+IFS_old="${IFS}"
+
+# Scan our formula directory for formulae.
+repo_formulae=()
+for formula_file in "${formula_dir}/${formula_prefix}"*.rb ; do
+  # Skip non-existent source (e.g. when no file matches).
+  [[ -e "${formula_file}" ]] \
+    || continue
+
+  # Extract formula name from file name and add to list of repository formulae.
+  formula_name="${formula_file##*/}"
+  formula_name="${formula_name%.rb}"
+  repo_formulae+=("${formula_name}")
+done
+IFS=:
+repo_match_str=":${repo_formulae[*]}:"
+IFS="${IFS_old}"
+
+# Scan versions file for formulae.
+file_formulae=()
+formulae_meta=()
+while IFS= read -r line ; do
+  # Skip empty and comment lines.
+  [[ -z "${line}" || "${line}" = "#"* ]] \
+    && continue
+
+  # Extract formula name and check if matching repository formula exists.
+  formula_name="${line%% *}"
+  if [[ "${repo_match_str}" != *":${formula_name}:"* ]] ; then
+    echo "Warning: Formula '${formula_name}' exists in versions file, but not in repository." >&2
+    continue
+  fi
+
+  # Keep a list of formula names and corresponding meta information.
+  file_formulae+=("${formula_name}")
+  formulae_meta+=("${line}")
+done \
+  < "${versions_path}"
+
+# Check that all repository formulae are also mentioned in versions file.
+IFS=:
+file_match_str=":${file_formulae[*]}:"
+IFS="${IFS_old}"
+for formula_name in "${repo_formulae[@]}" ; do
+  if [[ "${file_match_str}" != *":${formula_name}:"* ]] ; then
+    echo "Warning: Formula '${formula_name}' exists in repository, but not in versions file." >&2
+  fi
+done
+
+# Synchronize, i.e. add possibly missing commit date and change commit ID to the
+# one that actually changed the specified formula.
+num_updated=0
+new_meta=()
+echo "Synchronizing versions file to Homebrew repository:"
+for info in "${formulae_meta[@]}" ; do
+  # Parse the info line.
+  formula_name=
+  formula_base=
+  commit_id=
+  commit_date=
+  chunk_count=0
+  for chunk in ${info} ; do
+    let ++chunk_count
+    case "${chunk}" in
+      base=*)
+        [[ "${chunk_count}" -eq 2 ]] \
+          || die "Expected 'base' field to be the 2nd in the line."
+        formula_base="${chunk#base=}"
+        ;;
+      commit=*)
+        [[ "${chunk_count}" -eq 3 ]] \
+          || die "Expected 'commit' field to be the 3rd in the line."
+        commit_id="${chunk#commit=}"
+        ;;
+      date=*)
+        [[ "${chunk_count}" -eq 4 ]] \
+          || die "Expected 'date' field to be the 4th in the line."
+        commit_date="${chunk#date=}"
+        ;;
+      *=*)
+        # Invalid field.
+        die "Encountered invalid field '${chunk}' in versions file."
+        ;;
+      *)
+        # No equals sign means we have a formula name.
+        [[ "${chunk_count}" -eq 1 ]] \
+          || die "Expected formula name to be the 1st in the line."
+        formula_name="${chunk}"
+        ;;
+    esac
+  done
+
+  # Check that all required variables are set.
+  [[ -n "${formula_name}" && -n "${formula_base}" && -n "${commit_id}" ]] \
+    || die "Some required fields are either missing or empty."
+
+  # Query Homebrew repository for true commit ID and date.
+  git_args=(
+    -C "${homebrew_prefix}"
+    log -1 --format=%H@%aI
+    "${commit_id}"
+    -- "Library/Formula/${formula_base}.rb"
+  )
+  commit_info="$(git "${git_args[@]}")"
+  [[ "${?}" -eq 0 && -n "${commit_info}" ]] \
+    || die "Failed to query history of formula '${formula_base}'."
+  real_id="${commit_info%%@*}"
+  real_date="${commit_info#*@}"
+
+  # Check if there are changes.
+  if [[ "${commit_id}" != "${real_id}" || "${commit_date}" != "${real_date}" ]] ; then
+    let ++num_updated
+    echo "  * ${formula_name}"
+  fi
+
+  # Reassemble info line.
+  info_prefix="${info% commit=*}"
+  new_meta+=("${info_prefix} commit=${real_id} date=${real_date}")
+done
+if [[ "${num_updated}" -eq 0 ]] ; then
+  echo "  (all entries already in sync)"
+  [[ -n "${do_update}" ]] \
+    || exit 0
+else
+  echo
+  echo "Writing versions file with ${num_updated} updated entries."
+  printf "%s\n" "${new_meta[@]}" > "${versions_path}"
+  if [[ -n "${do_update}" ]] ; then
+    echo "Warning: Cannot proceed with update. Altered versions file needs to be staged/committed first." >&2
+  fi
+  exit 0
+fi
+
+# TODO: Implement 'update' action.
+die "Sorry, update not yet implemented."
