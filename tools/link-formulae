@@ -7,13 +7,27 @@
 #
 # Usage:
 #
-#   link-formulae
+#   link-formulae [--unlink]
 
 # Exits program with error message.
 die() {
   echo "Error: ${*}" >&2
   exit 1
 }
+
+# Process arguments.
+remove_only=
+case "${#}:${1}" in
+  0:)
+    # Default mode of operation.
+    ;;
+  1:--unlink)
+    remove_only=t
+    ;;
+  *)
+    die "Usage: ${0##*/} [--unlink]"
+    ;;
+esac
 
 # Check source directory (repository root, parent of 'tools').
 self="${0}"
@@ -34,7 +48,8 @@ formula_dir="${homebrew_prefix}/Library/Formula"
 
 # Link our formulae.
 formula_prefix=tw-
-count=0
+ln_count=0
+rm_count=0
 echo "Source: ${source_dir}"
 echo "Target: ${formula_dir}"
 echo
@@ -42,9 +57,12 @@ echo "Symbols used:"
 echo "  = link is already up-to-date"
 echo "  * updating existing link"
 echo "  + creating new link"
+echo "  - removing existing link"
 echo "  ! target exists and is not a symbolic link (conflict?)"
 echo
-echo "Linking formulae:"
+[[ -n "${remove_only}" ]] \
+  && echo "Unlinking formulae:" \
+  || echo "Linking formulae:"
 for source_file in "${source_dir}/${formula_prefix}"*.rb ; do
   # Skip non-existent source (e.g. when no file matches).
   [[ -e "${source_file}" ]] \
@@ -57,27 +75,37 @@ for source_file in "${source_dir}/${formula_prefix}"*.rb ; do
   target_file="${formula_dir}/${name}.rb"
 
   # Check, update/add symbolic links.
-  let ++count
+  let ++ln_count
   if [[ -L "${target_file}" ]] ; then
-    old_source="$(readlink "${target_file}")"
-    if [[ "${old_source}" = "${source_file}" ]] ; then
-      echo "  = ${name}"
-      continue
+    if [[ -z "${remove_only}" ]] ; then
+      old_source="$(readlink "${target_file}")"
+      if [[ "${old_source}" = "${source_file}" ]] ; then
+        echo "  = ${name}"
+        continue
+      fi
+      echo "  * ${name}"
+    else
+      echo "  - ${name}"
     fi
-    echo "  * ${name}"
+    let ++rm_count
     rm "${target_file}" \
       || echo "    Failed to remove existing link for '${name}'." >&2
   elif [[ -e "${target_file}" ]] ; then
     echo "  ! ${name}"
     continue
   else
-    echo "  + ${name}"
+    [[ -z "${remove_only}" ]] \
+      && echo "  + ${name}"
   fi
+  [[ -n "${remove_only}" ]] \
+    && continue
   ln -s "${source_file}" "${target_file}" \
     || echo "    Failed to create new link for '${name}'." >&2
 done
-if [[ "${count}" -eq 0 ]] ; then
+if [[ "${ln_count}" -eq 0 ]] ; then
   echo "  (no formulae with prefix '${formula_prefix}' found)"
+elif [[ -n "${remove_only}" && "${rm_count}" -eq 0 ]] ; then
+  echo "  (nothing to unlink)"
 fi
 
 # Clean up (remove possibly broken links).
