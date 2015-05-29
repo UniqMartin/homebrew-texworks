@@ -9,6 +9,9 @@
 #
 #   link-formulae [--unlink]
 
+# Configuration.
+formula_prefix=tw-
+
 # Exits program with error message.
 die() {
   echo "Error: ${*}" >&2
@@ -47,7 +50,6 @@ formula_dir="${homebrew_prefix}/Library/Formula"
   || die "Expected '${formula_dir}' to be a writable directory."
 
 # Link our formulae.
-formula_prefix=tw-
 ln_count=0
 rm_count=0
 echo "Source: ${source_dir}"
