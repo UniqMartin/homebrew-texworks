@@ -11,6 +11,7 @@
 
 # Configuration.
 formula_prefix=tw-
+tap_prefix=uniqmartin/homebrew-texworks
 
 # Exits program with error message.
 die() {
@@ -45,7 +46,11 @@ source_dir="$(cd "${source_dir}" && pwd)"
 homebrew_prefix="$(brew --prefix)"
 [[ -n "${homebrew_prefix}" && -d "${homebrew_prefix}" ]] \
   || die "Failed to determine Homebrew prefix."
-formula_dir="${homebrew_prefix}/Library/Formula"
+formula_dir="${homebrew_prefix}/Library/Taps/${tap_prefix}"
+if [[ ! -e "${formula_dir}" ]] ; then
+  mkdir -p "${formula_dir}" \
+    || die "Failed to create directory '${formula_dir}'."
+fi
 [[ -d "${formula_dir}" && -w "${formula_dir}" ]] \
   || die "Expected '${formula_dir}' to be a writable directory."
 
@@ -110,6 +115,15 @@ elif [[ -n "${remove_only}" && "${rm_count}" -eq 0 ]] ; then
   echo "  (nothing to unlink)"
 fi
 
-# Clean up (remove possibly broken links).
-echo
-brew tap --repair
+# Clean up, i.e. remove directories that should be empty now.
+if [[ -n "${remove_only}" ]] ; then
+  echo
+  if rmdir "${formula_dir}" 2> /dev/null ; then
+    echo "Removed directory '${formula_dir}'."
+    if rmdir "${formula_dir%/*}" 2> /dev/null ; then
+      echo "Removed directory '${formula_dir%/*}'."
+    fi
+  else
+    echo "Failed to remove directory '${formula_dir}' (should be empty)."
+  fi
+fi
