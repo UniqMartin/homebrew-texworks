@@ -1,15 +1,15 @@
-tw-fontconfig   base=fontconfig  commit=6b6e7ef367b98947d363353f3a6bf34f09c7cfa4
-tw-freetype     base=freetype    commit=6b6e7ef367b98947d363353f3a6bf34f09c7cfa4
-tw-hunspell     base=hunspell    commit=6b6e7ef367b98947d363353f3a6bf34f09c7cfa4
-tw-jpeg         base=jpeg        commit=6b6e7ef367b98947d363353f3a6bf34f09c7cfa4
-tw-libpng       base=libpng      commit=6b6e7ef367b98947d363353f3a6bf34f09c7cfa4
-tw-libtiff      base=libtiff     commit=6b6e7ef367b98947d363353f3a6bf34f09c7cfa4
-tw-little-cms2  base=little-cms2 commit=6b6e7ef367b98947d363353f3a6bf34f09c7cfa4
-tw-lua          base=lua         commit=6b6e7ef367b98947d363353f3a6bf34f09c7cfa4
-tw-openjpeg     base=openjpeg    commit=6b6e7ef367b98947d363353f3a6bf34f09c7cfa4
-tw-pkg-config   base=pkg-config  commit=6b6e7ef367b98947d363353f3a6bf34f09c7cfa4
-tw-poppler-data base=poppler     commit=6b6e7ef367b98947d363353f3a6bf34f09c7cfa4
-tw-poppler-qt4  base=poppler     commit=6b6e7ef367b98947d363353f3a6bf34f09c7cfa4
-tw-poppler-qt5  base=poppler     commit=6b6e7ef367b98947d363353f3a6bf34f09c7cfa4
-tw-qt4          base=qt          commit=6b6e7ef367b98947d363353f3a6bf34f09c7cfa4
-tw-qt5          base=qt5         commit=6b6e7ef367b98947d363353f3a6bf34f09c7cfa4
+tw-fontconfig   base=fontconfig  commit=fc2f5f8e5f10c87565a7f8d9b9802e120abfca29 date=2015-01-08T14:39:25+08:00
+tw-freetype     base=freetype    commit=f3d7fa881018f72ea6eacfea3597d7ee81cf0ee3 date=2015-01-06T03:20:26-08:00
+tw-hunspell     base=hunspell    commit=6e41f032f7292ce5ac8bf7ef45ee7b36b93fc410 date=2014-06-16T23:49:06-07:00
+tw-jpeg         base=jpeg        commit=0f8a9ef9dbbc8d703eca930a2fab7cebf9e9b300 date=2015-01-02T20:06:46+08:00
+tw-libpng       base=libpng      commit=022436b1fd3f3d2c8a96a3e34e8bbd424d03e74a date=2015-04-11T04:20:27+01:00
+tw-libtiff      base=libtiff     commit=991b6b702edd332587e644a91cdbc7865d25cdf6 date=2015-01-12T23:21:18-08:00
+tw-little-cms2  base=little-cms2 commit=bbf599dd8732f02ecf8d9d7155d165d3db6745fe date=2015-04-06T07:21:43+01:00
+tw-lua          base=lua         commit=b3e3903d69c352ad1f528facdf53d6eb510707ee date=2015-05-01T20:22:27-04:00
+tw-openjpeg     base=openjpeg    commit=f42fb723e7a44738b9191e41966418c12f1f4ed2 date=2014-10-22T15:41:53+01:00
+tw-pkg-config   base=pkg-config  commit=76b54003ffaa17a64511b08cd95f06c2b14fc7ee date=2014-12-27T16:10:40+00:00
+tw-poppler-data base=poppler     commit=a9c71051da3ad5e25e1889b838ba843c7ed1aa48 date=2014-12-27T16:56:51-05:00
+tw-poppler-qt4  base=poppler     commit=a9c71051da3ad5e25e1889b838ba843c7ed1aa48 date=2014-12-27T16:56:51-05:00
+tw-poppler-qt5  base=poppler     commit=a9c71051da3ad5e25e1889b838ba843c7ed1aa48 date=2014-12-27T16:56:51-05:00
+tw-qt4          base=qt          commit=21c677f5c505419f7dbe2c131517fb32f870fded date=2015-04-30T01:47:13+01:00
+tw-qt5          base=qt5         commit=0b2caa76d44068fc2c0ee7bb8e68bddf67e2e9d7 date=2015-04-30T14:37:53+01:00
