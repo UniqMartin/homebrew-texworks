@@ -5,9 +5,9 @@ tw-jpeg         base=jpeg        commit=0f8a9ef9dbbc8d703eca930a2fab7cebf9e9b300
 tw-libpng       base=libpng      commit=022436b1fd3f3d2c8a96a3e34e8bbd424d03e74a date=2015-04-11T04:20:27+01:00
 tw-libtiff      base=libtiff     commit=991b6b702edd332587e644a91cdbc7865d25cdf6 date=2015-01-12T23:21:18-08:00
 tw-little-cms2  base=little-cms2 commit=bbf599dd8732f02ecf8d9d7155d165d3db6745fe date=2015-04-06T07:21:43+01:00
-tw-lua          base=lua         commit=b3e3903d69c352ad1f528facdf53d6eb510707ee date=2015-05-01T20:22:27-04:00
+tw-lua          base=lua         commit=7c72d3b9179fd08fb16e653607755be375a47db3 date=2015-05-23T08:05:26+01:00
 tw-openjpeg     base=openjpeg    commit=f42fb723e7a44738b9191e41966418c12f1f4ed2 date=2014-10-22T15:41:53+01:00
-tw-pkg-config   base=pkg-config  commit=76b54003ffaa17a64511b08cd95f06c2b14fc7ee date=2014-12-27T16:10:40+00:00
+tw-pkg-config   base=pkg-config  commit=2c1116af5a4bb9b453f6f20b026f9bbde9f70050 date=2015-05-06T00:40:36+02:00
 tw-poppler-data base=poppler     commit=a9c71051da3ad5e25e1889b838ba843c7ed1aa48 date=2014-12-27T16:56:51-05:00
 tw-poppler-qt4  base=poppler     commit=a9c71051da3ad5e25e1889b838ba843c7ed1aa48 date=2014-12-27T16:56:51-05:00
 tw-poppler-qt5  base=poppler     commit=a9c71051da3ad5e25e1889b838ba843c7ed1aa48 date=2014-12-27T16:56:51-05:00
