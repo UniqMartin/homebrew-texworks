@@ -1,6 +1,7 @@
 require_relative "common/tw-formula"
 
 class TwLua < TwFormula
+  desc "Powerful, lightweight programming language"
   homepage "http://www.lua.org/"
   url "http://www.lua.org/ftp/lua-5.2.3.tar.gz"
   sha256 "13c2fb97961381f7d06d5b5cea55b743c163800896fd5c5e2356201d3619002d"

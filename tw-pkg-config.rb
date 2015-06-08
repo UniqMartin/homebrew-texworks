@@ -1,6 +1,7 @@
 require_relative "common/tw-formula"
 
 class TwPkgConfig < TwFormula
+  desc "Manage compile and link flags for libraries"
   homepage "https://wiki.freedesktop.org/www/Software/pkg-config/"
   url "http://pkgconfig.freedesktop.org/releases/pkg-config-0.28.tar.gz"
   sha256 "6b6eb31c6ec4421174578652c7e141fdaae2dabad1021f420d8713206ac1f845"

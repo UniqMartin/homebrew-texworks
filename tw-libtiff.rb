@@ -1,6 +1,7 @@
 require_relative "common/tw-formula"
 
 class TwLibtiff < TwFormula
+  desc "TIFF library and utilities"
   homepage "http://www.remotesensing.org/libtiff/"
   url "ftp://ftp.remotesensing.org/pub/libtiff/tiff-4.0.3.tar.gz"
   mirror "http://download.osgeo.org/libtiff/tiff-4.0.3.tar.gz"
