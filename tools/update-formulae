@@ -234,26 +234,28 @@ for info in "${old_meta[@]}" ; do
 
   # Add comment about pending change to our own formula and generate files that
   # allow to reconstruct and adapt the change.
-  cat >> "${formula_dir}/${formula_name}.rb" <<EOF
+  formula_file="${formula_dir}/${formula_name}"
+  cat >> "${formula_file}.rb" <<EOF
 
 # Base Homebrew formula '${formula_base}' has changed:
 #   * Old commit: ${old_id} (${old_date})
 #   * New commit: ${new_id} (${new_date})
-#   * See '${formula_name}.{OLD,NEW,DIFF,LOG}' for details, incorporate those
+#   * See '${formula_name}.up.{OLD,NEW,DIFF,LOG}' for details, incorporate those
 #     changes, if applicable, and remove this comment afterwards.
 EOF
   git -C "${homebrew_prefix}" \
     show "${old_id}:Library/Formula/${formula_base}.rb" \
-    > "${formula_dir}/${formula_name}.OLD"
+    > "${formula_file}.up.OLD"
   git -C "${homebrew_prefix}" \
     show "${new_id}:Library/Formula/${formula_base}.rb" \
-    > "${formula_dir}/${formula_name}.NEW"
+    > "${formula_file}.up.NEW"
   git -C "${homebrew_prefix}" \
     diff "${old_id}..${new_id}" -- "Library/Formula/${formula_base}.rb" \
-    > "${formula_dir}/${formula_name}.DIFF"
+    > "${formula_file}.up.DIFF"
   git -C "${homebrew_prefix}" \
     log -p "${old_id}..${new_id}" -- "Library/Formula/${formula_base}.rb" \
-    > "${formula_dir}/${formula_name}.LOG"
+    > "${formula_file}.up.LOG"
+  cat < "${formula_file}.up.DIFF" >> "${formula_file}.rb"
 done
 if [[ "${num_updated}" -eq 0 ]] ; then
   echo "  (all entries already up-to-date)"
