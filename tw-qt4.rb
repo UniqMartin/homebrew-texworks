@@ -3,17 +3,11 @@ require_relative "common/tw-formula"
 class TwQt4 < TwFormula
   desc "Cross-platform application and UI framework"
   homepage "https://www.qt.io/"
-  url "https://download.qt.io/official_releases/qt/4.8/4.8.6/qt-everywhere-opensource-src-4.8.6.tar.gz"
-  mirror "http://qtmirror.ics.com/pub/qtproject/official_releases/qt/4.8/4.8.6/qt-everywhere-opensource-src-4.8.6.tar.gz"
-  sha256 "8b14dd91b52862e09b8e6a963507b74bc2580787d171feda197badfa7034032c"
+  url "https://download.qt.io/official_releases/qt/4.8/4.8.7/qt-everywhere-opensource-src-4.8.7.tar.gz"
+  mirror "https://www.mirrorservice.org/sites/download.qt-project.org/official_releases/qt/4.8/4.8.7/qt-everywhere-opensource-src-4.8.7.tar.gz"
+  sha256 "e2882295097e47fe089f8ac741a95fef47e0a73a3f3cdf21b56990638f626ea0"
 
   depends_on "tw-pkg-config" => :build
-
-  # This patch should be able to be removed with the next stable Qt4 release.
-  patch do
-    url "https://raw.githubusercontent.com/DomT4/scripts/440e3cafde5bf6ec6f50cd28fa5bf89c280f1b53/Homebrew_Resources/Qt/qt4patch.diff"
-    sha256 "b0e597a95b40efe36b093230d0fe3c0461aaa24eb6ff01e084e37e1f61f88114"
-  end
 
   def install
     # We really only care about 10.9+. Prevent Qt from being too stubborn.

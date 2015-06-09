@@ -11,5 +11,5 @@ tw-pkg-config   base=pkg-config  commit=8dd3478131b232553f4c0cab197f8443a0a559a6
 tw-poppler-data base=poppler     commit=8dd3478131b232553f4c0cab197f8443a0a559a6 date=2015-05-18T20:00:59-04:00
 tw-poppler-qt4  base=poppler     commit=8dd3478131b232553f4c0cab197f8443a0a559a6 date=2015-05-18T20:00:59-04:00
 tw-poppler-qt5  base=poppler     commit=8dd3478131b232553f4c0cab197f8443a0a559a6 date=2015-05-18T20:00:59-04:00
-tw-qt4          base=qt          commit=8dd3478131b232553f4c0cab197f8443a0a559a6 date=2015-05-18T20:00:59-04:00
+tw-qt4          base=qt          commit=28d60c8d8e2116d20ad5398f48c6bc1408953442 date=2015-06-09T02:37:34+01:00
 tw-qt5          base=qt5         commit=8dd3478131b232553f4c0cab197f8443a0a559a6 date=2015-05-18T20:00:59-04:00
