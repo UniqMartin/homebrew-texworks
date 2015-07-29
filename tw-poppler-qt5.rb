@@ -3,8 +3,8 @@ require_relative "common/tw-formula"
 class TwPopplerQt5 < TwFormula
   desc "PDF rendering library (based on the xpdf-3.0 code base)"
   homepage "http://poppler.freedesktop.org"
-  url "http://poppler.freedesktop.org/poppler-0.29.0.tar.xz"
-  sha1 "ba3330ab884e6a139ca63dd84d0c1c676f545b5e"
+  url "http://poppler.freedesktop.org/poppler-0.34.0.tar.xz"
+  sha256 "1ba4ba9a2f9eb1e62ee6d736f4d82be4fc5f6dd177dc2b03febbe2ef2e515cb0"
 
   depends_on "tw-pkg-config" => :build
   depends_on "tw-poppler-data" # (outsourced)
@@ -25,7 +25,7 @@ class TwPopplerQt5 < TwFormula
       --disable-dependency-tracking
       --prefix=#{prefix}
       --enable-xpdf-headers
-      --enable-libopenjpeg
+      --enable-libopenjpeg=auto
       --enable-libtiff
       --enable-libjpeg
       --enable-libpng
