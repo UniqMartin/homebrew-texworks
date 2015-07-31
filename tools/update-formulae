@@ -19,6 +19,18 @@ die() {
   exit 1
 }
 
+# Tests if an array contains a value.
+in-array() {
+  local item value="${1}"
+
+  shift
+  for item in "${@}" ; do
+    [[ "${item}" = "${value}" ]] \
+      && return 0
+  done
+  return 1
+}
+
 # Process arguments.
 do_update=
 case "${#}:${1}" in
@@ -57,9 +69,6 @@ versions_dirty="$(git -C "${formula_dir}" diff-files -- "${versions_file}")"
 [[ -z "${versions_dirty}" ]] \
   || die "Cannot proceed due to unstaged changes in '${versions_path}'."
 
-# Keep a copy of the original IFS for later.
-IFS_old="${IFS}"
-
 # Scan our formula directory for formulae.
 repo_formulae=()
 for formula_file in "${formula_dir}/${formula_prefix}"*.rb ; do
@@ -72,9 +81,6 @@ for formula_file in "${formula_dir}/${formula_prefix}"*.rb ; do
   formula_name="${formula_name%.rb}"
   repo_formulae+=("${formula_name}")
 done
-IFS=:
-repo_match_str=":${repo_formulae[*]}:"
-IFS="${IFS_old}"
 
 # Scan versions file for formulae.
 file_formulae=()
@@ -86,7 +92,7 @@ while IFS= read -r line ; do
 
   # Extract formula name and check if matching repository formula exists.
   formula_name="${line%% *}"
-  if [[ "${repo_match_str}" != *":${formula_name}:"* ]] ; then
+  if ! in-array "${formula_name}" "${repo_formulae[@]}" ; then
     echo "Warning: Formula '${formula_name}' exists in versions file, but not in repository." >&2
     continue
   fi
@@ -98,11 +104,8 @@ done \
   < "${versions_path}"
 
 # Check that all repository formulae are also mentioned in versions file.
-IFS=:
-file_match_str=":${file_formulae[*]}:"
-IFS="${IFS_old}"
 for formula_name in "${repo_formulae[@]}" ; do
-  if [[ "${file_match_str}" != *":${formula_name}:"* ]] ; then
+  if ! in-array "${formula_name}" "${file_formulae[@]}" ; then
     echo "Warning: Formula '${formula_name}' exists in repository, but not in versions file." >&2
   fi
 done
