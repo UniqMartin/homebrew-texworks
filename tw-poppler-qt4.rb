@@ -3,8 +3,8 @@ require_relative "common/tw-formula"
 class TwPopplerQt4 < TwFormula
   desc "PDF rendering library (based on the xpdf-3.0 code base)"
   homepage "http://poppler.freedesktop.org"
-  url "http://poppler.freedesktop.org/poppler-0.34.0.tar.xz"
-  sha256 "1ba4ba9a2f9eb1e62ee6d736f4d82be4fc5f6dd177dc2b03febbe2ef2e515cb0"
+  url "http://poppler.freedesktop.org/poppler-0.35.0.tar.xz"
+  sha256 "e86755b1a4df6efe39d84f581c11bcb0e34976166a671a7b700c28ebaa3e2189"
 
   depends_on "tw-pkg-config" => :build
   depends_on "tw-poppler-data" # (outsourced)
@@ -18,6 +18,8 @@ class TwPopplerQt4 < TwFormula
   depends_on "tw-little-cms2"  # optional
 
   def install
+    ENV["LIBOPENJPEG_CFLAGS"] = "-I#{Formula["tw-openjpeg"].opt_include}/openjpeg-1.5"
+
     # Required:
     #   * Backend used by TeXworks: --enable-splash-output
     #   * Poppler XPDF headers (?): --enable-xpdf-headers

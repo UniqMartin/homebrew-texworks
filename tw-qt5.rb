@@ -1,12 +1,17 @@
 require_relative "common/tw-formula"
 
+# Patches for Qt5 must be at the very least submitted to Qt's Gerrit codereview
+# rather than their bug-report Jira. The latter is rarely reviewed by Qt.
 class TwQt5 < TwFormula
   desc "Version 5 of the Qt framework"
   homepage "https://www.qt.io/"
+
+  # 5.5.0 has a compile-breaking pkg-config error when projects use that to find libs.
+  # https://bugreports.qt.io/browse/QTBUG-47162
+  # This is known to impact Wireshark & Poppler optional Qt5 usage in the core.
   url "https://download.qt.io/official_releases/qt/5.5/5.5.0/single/qt-everywhere-opensource-src-5.5.0.tar.xz"
   mirror "https://www.mirrorservice.org/sites/download.qt-project.org/official_releases/qt/5.5/5.5.0/single/qt-everywhere-opensource-src-5.5.0.tar.xz"
   sha256 "7ea2a16ecb8088e67db86b0835b887d5316121aeef9565d5d19be3d539a2c2af"
-  revision 1
 
   # Apple's 3.6.0svn based clang doesn't support -Winconsistent-missing-override
   # https://bugreports.qt.io/browse/QTBUG-46833
@@ -14,14 +19,14 @@ class TwQt5 < TwFormula
   # when this formula is updated to 5.5.1
   patch :DATA
 
-  # `qmake` generates broken `pkg-config` files with quoted '-framework QtCore'
-  # (and similarly for all other frameworks), that remains a single argument in
-  # projects that use Qt via `pkg-config` and thus causes breakage when linking
-  # ('-framework' and 'QtCore' need to be passed as separate arguments).
-  # https://bugreports.qt.io/browse/QTBUG-47162
-  patch do
-    url "https://gist.githubusercontent.com/UniqMartin/a54542d666be1983dc83/raw/f235dfb418c3d0d086c3baae520d538bae0b1c70/qtbug-47162.patch"
-    sha256 "e31df5d0c5f8a9e738823299cb6ed5f5951314a28d4a4f9f021f423963038432"
+  # Upstream commit to fix the fatal build error on OS X El Capitan.
+  # https://codereview.qt-project.org/#/c/121545/
+  # Should land in the 5.5.1 release.
+  if MacOS.version >= :el_capitan
+    patch do
+      url "https://raw.githubusercontent.com/DomT4/scripts/2107043e8/Homebrew_Resources/Qt5/qt5_el_capitan.diff"
+      sha256 "bd8fd054247ec730f60778e210d58cba613265e5df04ec93f4110421fb03b14a"
+    end
   end
 
   depends_on "tw-pkg-config" => :build
