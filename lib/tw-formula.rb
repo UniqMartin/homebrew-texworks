@@ -3,20 +3,21 @@ class TwFormula < Formula
   # changes in the future.
   TW_DEPLOYMENT_TARGET = "10.9"
 
-  # Keep track if we already augmented :install from formula.
-  @tw_install_patched = FALSE
+  # Keeps track if we already augmented :install from formula.
+  @tw_install_patched = false
 
-  # Inject additional dependencies and stuff.
-  def self.inherited subclass
-    subclass.__send__ :keg_only, "TeXworks build dependency."
-    subclass.__send__ :depends_on, :macos => :mavericks
+  # Injects additional dependencies and stuff.
+  def self.inherited(subclass)
+    subclass.__send__(:keg_only, "TeXworks build dependency.")
+    subclass.__send__(:depends_on, :macos => :mavericks)
   end
 
-  # Augment formula method :install to include a few more things.
-  def self.method_added method
+  # Augments formula method 'install' to include a few more things.
+  def self.method_added(method)
     # Check what is being added and patch (but only once).
-    return if method != :install || @tw_install_patched
-    @tw_install_patched = TRUE
+    return unless method == :install
+    return if @tw_install_patched
+    @tw_install_patched = true
 
     # Augment :install from formula with our extended version.
     alias_method :tw_install, :install
