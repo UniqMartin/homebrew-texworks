@@ -11,7 +11,7 @@
 
 # Configuration.
 formula_prefix=tw-
-tap_prefix=uniqmartin/homebrew-texworks
+tap_prefix=uniqmartin-linked/homebrew-texworks
 
 # Exits program with error message.
 die() {
