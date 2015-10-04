@@ -14,6 +14,9 @@ class TwFormula < Formula
 
   # Augments formula method 'install' to include a few more things.
   def self.method_added(method)
+    # Let base 'Formula' react to method additions, e.g. for 'test do' blocks.
+    super(method)
+
     # Check what is being added and patch (but only once).
     return unless method == :install
     return if @tw_install_patched
