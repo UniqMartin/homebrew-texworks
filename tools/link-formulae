@@ -22,14 +22,14 @@ die() {
 # Process arguments.
 remove_only=
 case "${#}:${1}" in
-  0:)
+  1:--link)
     # Default mode of operation.
     ;;
   1:--unlink)
     remove_only=t
     ;;
   *)
-    die "Usage: ${0##*/} [--unlink]"
+    die "Usage: ${0##*/} {--link|--unlink}"
     ;;
 esac
 
