@@ -1,4 +1,4 @@
-require_relative "common/tw-formula"
+require_relative "../lib/tw-formula"
 
 class TwQt4 < TwFormula
   desc "Cross-platform application and UI framework"

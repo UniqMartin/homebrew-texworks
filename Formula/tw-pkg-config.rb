@@ -1,4 +1,4 @@
-require_relative "common/tw-formula"
+require_relative "../lib/tw-formula"
 
 class TwPkgConfig < TwFormula
   desc "Manage compile and link flags for libraries"

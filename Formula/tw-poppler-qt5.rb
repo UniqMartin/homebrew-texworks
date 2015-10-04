@@ -1,6 +1,6 @@
-require_relative "common/tw-formula"
+require_relative "../lib/tw-formula"
 
-class TwPopplerQt4 < TwFormula
+class TwPopplerQt5 < TwFormula
   desc "PDF rendering library (based on the xpdf-3.0 code base)"
   homepage "http://poppler.freedesktop.org"
   url "http://poppler.freedesktop.org/poppler-0.36.0.tar.xz"
@@ -14,7 +14,7 @@ class TwPopplerQt4 < TwFormula
   depends_on "tw-libpng"       # required
   depends_on "tw-libtiff"      # optional
   depends_on "tw-openjpeg"     # recommended
-  depends_on "tw-qt4"          # required
+  depends_on "tw-qt5"          # required
   depends_on "tw-little-cms2"  # optional
 
   def install
@@ -38,8 +38,8 @@ class TwPopplerQt4 < TwFormula
       --enable-gtk-doc=no
       --enable-gtk-doc-html=no
       --enable-gtk-doc-pdf=no
-      --enable-poppler-qt4
-      --disable-poppler-qt5
+      --disable-poppler-qt4
+      --enable-poppler-qt5
       --disable-poppler-cpp
       --disable-gtk-test
       --disable-utils

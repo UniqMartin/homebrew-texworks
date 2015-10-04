@@ -1,4 +1,4 @@
-require_relative "common/tw-formula"
+require_relative "../lib/tw-formula"
 
 class TwLua < TwFormula
   desc "Powerful, lightweight programming language"

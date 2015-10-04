@@ -1,4 +1,4 @@
-require_relative "common/tw-formula"
+require_relative "../lib/tw-formula"
 
 class TwHunspell < TwFormula
   desc "Spell checker and morphological analyzer"

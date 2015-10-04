@@ -1,4 +1,4 @@
-require_relative "common/tw-formula"
+require_relative "../lib/tw-formula"
 
 class TwPopplerData < TwFormula
   desc "PDF rendering library (based on the xpdf-3.0 code base)"

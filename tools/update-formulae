@@ -45,15 +45,16 @@ case "${#}:${1}" in
     ;;
 esac
 
-# Check our formula directory (repository root, parent of 'tools').
+# Determine our formula directory ('Formula' from repository root).
 self="${0}"
 [[ "${self}" = /* ]] \
   || self="${PWD}/${self}"
-formula_dir="${self%/*}/.."
-formula_dir="$(cd "${formula_dir}" && pwd)"
+repo_dir="${self%/*}/.."
+repo_dir="$(cd "${repo_dir}" && pwd)"
+formula_dir="${repo_dir}/Formula"
 [[ -n "${formula_dir}" && -d "${formula_dir}" && -r "${formula_dir}" ]] \
   || die "Expected '${formula_dir}' to be a readable directory."
-versions_path="${formula_dir}/${versions_file}"
+versions_path="${repo_dir}/${versions_file}"
 [[ -f "${versions_path}" && -r "${versions_path}" ]] \
   || die "Expected '${versions_path}' to be a readable file."
 
@@ -63,7 +64,7 @@ homebrew_prefix="$(brew --prefix)"
   || die "Failed to determine Homebrew prefix."
 
 # Make sure versions file has no unstaged changes.
-versions_dirty="$(git -C "${formula_dir}" diff-files -- "${versions_file}")"
+versions_dirty="$(git -C "${repo_dir}" diff-files -- "${versions_file}")"
 [[ "${?}" -eq 0 ]] \
   || die "Failed to determine status of '${versions_path}'."
 [[ -z "${versions_dirty}" ]] \

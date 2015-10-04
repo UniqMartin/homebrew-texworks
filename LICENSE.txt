@@ -26,10 +26,10 @@ license (BSD 2 Clause license; also known as “NetBSD license”):
 
 --------------------------------------------------------------------------------
 
-Files named 'tw-*.rb' at the repository root (the same directory this file
-resides in) are derived from corresponding formulae from the Homebrew project
-(https://github.com/Homebrew/homebrew) as documented in the 'VERSIONS' file and
-are subject to the following license:
+Files named 'tw-*.rb' in the 'Formula' directory are derived from corresponding
+formulae from the Homebrew project (https://github.com/Homebrew/homebrew) as
+documented in the 'VERSIONS' file at the repository root (the same directory
+this file resides in) and are subject to the following license:
 
   Copyright 2009-2015 Homebrew contributors.
 

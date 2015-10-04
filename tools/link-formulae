@@ -33,12 +33,13 @@ case "${#}:${1}" in
     ;;
 esac
 
-# Check source directory (repository root, parent of 'tools').
+# Determine our formula directory ('Formula' from repository root).
 self="${0}"
 [[ "${self}" = /* ]] \
   || self="${PWD}/${self}"
-source_dir="${self%/*}/.."
-source_dir="$(cd "${source_dir}" && pwd)"
+repo_dir="${self%/*}/.."
+repo_dir="$(cd "${repo_dir}" && pwd)"
+source_dir="${repo_dir}/Formula"
 [[ -n "${source_dir}" && -d "${source_dir}" && -r "${source_dir}" ]] \
   || die "Expected '${source_dir}' to be a readable directory."
 

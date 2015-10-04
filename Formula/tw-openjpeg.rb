@@ -1,4 +1,4 @@
-require_relative "common/tw-formula"
+require_relative "../lib/tw-formula"
 
 class TwOpenjpeg < TwFormula
   desc "Library for JPEG-2000 image manipulation"

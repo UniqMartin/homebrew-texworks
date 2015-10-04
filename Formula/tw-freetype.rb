@@ -1,4 +1,4 @@
-require_relative "common/tw-formula"
+require_relative "../lib/tw-formula"
 
 class TwFreetype < TwFormula
   desc "Software library to render fonts"

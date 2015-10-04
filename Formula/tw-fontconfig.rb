@@ -1,4 +1,4 @@
-require_relative "common/tw-formula"
+require_relative "../lib/tw-formula"
 
 class TwFontconfig < TwFormula
   desc "XML-based font configuration API for X Windows"

@@ -1,4 +1,4 @@
-require_relative "common/tw-formula"
+require_relative "../lib/tw-formula"
 
 class TwLittleCms2 < TwFormula
   desc "Color management engine supporting ICC profiles"
