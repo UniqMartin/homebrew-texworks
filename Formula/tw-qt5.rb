@@ -95,6 +95,12 @@ class TwQt5 < TwFormula
     ENV.j1
     system "make", "install"
 
+    # `*.prl` files created by `qmake` contain references to the temporary build
+    # directory, which is not very helpful. Remove those references.
+    Pathname.glob("#{lib}/**/*.prl") do |path|
+      inreplace path, /^QMAKE_PRL_BUILD_DIR = .*\n/, ""
+    end
+
     # Some config scripts will only find Qt in a "Frameworks" folder
     frameworks.install_symlink Dir["#{lib}/*.framework"]
 
