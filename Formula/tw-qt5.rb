@@ -41,6 +41,11 @@ class TwQt5 < TwFormula
               "QMAKE_MACOSX_DEPLOYMENT_TARGET = 10.7",
               "QMAKE_MACOSX_DEPLOYMENT_TARGET = #{TwFormula::TW_DEPLOYMENT_TARGET}"
 
+    # The '-make tools' part brings in a lot of GUI tools we do not care about.
+    # However, it also disables useful command-line tools like 'macdeployqt' we
+    # would like to retain. Patching 'qttools/src/src.pro' solves this for us.
+    inreplace "qttools/src/src.pro", /\n    macdeployqt \\$/, ""
+
     # Disable all modules not used by TeXworks.
     args = %W[
       -prefix #{prefix}
