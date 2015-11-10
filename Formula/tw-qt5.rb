@@ -1,4 +1,4 @@
-require_relative "../lib/tw-formula"
+require File.expand_path("../../lib/tw-formula", __FILE__)
 
 # Patches for Qt5 must be at the very least submitted to Qt's Gerrit codereview
 # rather than their bug-report Jira. The latter is rarely reviewed by Qt.

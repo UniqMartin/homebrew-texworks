@@ -1,4 +1,4 @@
-require_relative "../lib/tw-formula"
+require File.expand_path("../../lib/tw-formula", __FILE__)
 
 class TwQt4 < TwFormula
   desc "Cross-platform application and UI framework"

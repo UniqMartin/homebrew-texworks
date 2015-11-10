@@ -1,4 +1,4 @@
-require_relative "../lib/tw-formula"
+require File.expand_path("../../lib/tw-formula", __FILE__)
 
 class TwOpenjpeg < TwFormula
   desc "Library for JPEG-2000 image manipulation"
@@ -12,11 +12,14 @@ class TwOpenjpeg < TwFormula
 
   def install
     # Disabling all binaries also removes all external dependencies.
-    system "cmake", ".", *std_cmake_args,
-                         "-DBUILD_CODEC:bool=off",
-                         "-DBUILD_MJ2:bool=off",
-                         "-DBUILD_JPWL:bool=off",
-                         "-DBUILD_JPIP:bool=off"
+    args = std_cmake_args + %w[
+      -DBUILD_CODEC:bool=off
+      -DBUILD_MJ2:bool=off
+      -DBUILD_JPWL:bool=off
+      -DBUILD_JPIP:bool=off
+    ]
+
+    system "cmake", ".", *args
     system "make", "install"
 
     # https://github.com/uclouvain/openjpeg/issues/562

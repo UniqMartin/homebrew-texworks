@@ -1,4 +1,4 @@
-require_relative "../lib/tw-formula"
+require File.expand_path("../../lib/tw-formula", __FILE__)
 
 class TwPopplerQt4 < TwFormula
   desc "PDF rendering library (based on the xpdf-3.0 code base)"

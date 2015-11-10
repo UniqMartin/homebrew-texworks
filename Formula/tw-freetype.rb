@@ -1,4 +1,4 @@
-require_relative "../lib/tw-formula"
+require File.expand_path("../../lib/tw-formula", __FILE__)
 
 class TwFreetype < TwFormula
   desc "Software library to render fonts"

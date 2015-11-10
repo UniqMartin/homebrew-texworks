@@ -1,4 +1,4 @@
-require_relative "../lib/tw-formula"
+require File.expand_path("../../lib/tw-formula", __FILE__)
 
 class TwFontconfig < TwFormula
   desc "XML-based font configuration API for X Windows"

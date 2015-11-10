@@ -1,4 +1,4 @@
-require_relative "../lib/tw-formula"
+require File.expand_path("../../lib/tw-formula", __FILE__)
 
 class TwLittleCms2 < TwFormula
   desc "Color management engine supporting ICC profiles"
