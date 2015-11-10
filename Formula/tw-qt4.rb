@@ -38,39 +38,53 @@ class TwQt4 < TwFormula
               ":contains(QT_CONFIG, gui-tools):"
 
     # Disable all modules not used by TeXworks.
-    args = %W[
-      -prefix #{prefix}
-      -bindir #{libexec}/bin
-      -release
-      -confirm-license
-      -opensource
-      -fast
-      -no-sql-sqlite
-      -no-qt3support
-      -no-xmlpatterns
-      -no-multimedia
-      -no-audio-backend
-      -no-phonon
-      -no-phonon-backend
-      -no-svg
-      -no-webkit
-      -no-javascript-jit
-      -no-declarative
-      -no-declarative-debug
-      -platform unsupported/macx-clang-libc++
-      -system-zlib
-      -qt-libtiff
-      -qt-libpng
-      -no-libmng
-      -qt-libjpeg
-      -no-openssl
-      -nomake demos
-      -nomake docs
-      -nomake examples
-      -no-dbus
-      -no-opengl
-      -arch x86_64
-    ]
+    args = [
+      # Section "Installation options".
+      %W[
+        -prefix #{prefix}
+        -bindir #{libexec}/bin
+      ],
+      # Section "Configure options".
+      %W[
+        -release
+        -opensource
+        -confirm-license
+        -fast
+        -no-sql-sqlite
+        -no-qt3support
+        -no-xmlpatterns
+        -no-multimedia
+        -no-audio-backend
+        -no-phonon
+        -no-phonon-backend
+        -no-svg
+        -no-webkit
+        -no-javascript-jit
+        -no-declarative
+        -no-declarative-debug
+        -platform unsupported/macx-clang-libc++
+      ],
+      # Section "Third Party Libraries".
+      %W[
+        -system-zlib
+        -qt-libtiff
+        -qt-libpng
+        -no-libmng
+        -qt-libjpeg
+        -no-openssl
+      ],
+      # Section "Additional options".
+      %W[
+        -nomake demos
+        -nomake docs
+        -nomake examples
+        -no-dbus
+      ],
+      # Section "Qt/Mac only".
+      %W[
+        -arch x86_64
+      ],
+    ].flatten
 
     system "./configure", *args
     system "make"
