@@ -44,6 +44,7 @@ class TwQt5 < TwFormula
     # Disable all modules not used by TeXworks.
     args = %W[
       -prefix #{prefix}
+      -bindir #{libexec}/bin
       -release
       -confirm-license
       -opensource
@@ -109,14 +110,18 @@ class TwQt5 < TwFormula
     inreplace prefix/"mkspecs/qconfig.pri", /\n\n# pkgconfig/, ""
     inreplace prefix/"mkspecs/qconfig.pri", /\nPKG_CONFIG_.*=.*$/, ""
 
-    # Move `*.app` bundles into `libexec` to expose them to `brew linkapps` and
-    # because we don't like having them in `bin`. Also add a `-qt5` suffix to
-    # avoid conflict with the `*.app` bundles provided by the `qt` formula.
-    # (Note: This move/rename breaks invocation of Assistant via the Help menu
-    # of both Designer and Linguist as that relies on Assistant being in `bin`.)
-    libexec.mkpath
-    Pathname.glob("#{bin}/*.app") do |app|
-      mv app, libexec/"#{app.basename(".app")}-qt5.app"
+    # We install binaries into `libexec/bin` as we don't want to have `*.app`
+    # bundles in `bin` and we cannot simply move them somewhere else after being
+    # installed as some paths are hard-coded. Symlink relevant stuff into `bin`.
+    (libexec/"bin").children.each do |path|
+      next if path.directory? || !path.executable?
+      next if path.basename.to_s == "syncqt.pl" # Skip tools internal to Qt.
+      bin.install_symlink path
+    end
+
+    # Link `*.app` bundles into `libexec` to expose them to `brew linkapps`.
+    Pathname.glob("#{libexec}/bin/*.app") do |app|
+      libexec.install_symlink app => "#{app.basename(".app")}-#{name}.app"
     end
   end
 
