@@ -89,13 +89,13 @@ class TwQt4 < TwFormula
     Pathname.glob("#{bin}/*.app") { |app| mv app, prefix }
   end
 
-  test do
-    system "#{bin}/qmake", "-project"
-  end
-
   def caveats; <<-EOS.undent
     We agreed to the Qt opensource license for you.
     If this is unacceptable you should uninstall.
     EOS
+  end
+
+  test do
+    system "#{bin}/qmake", "-project"
   end
 end
