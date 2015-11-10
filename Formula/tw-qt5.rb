@@ -33,6 +33,12 @@ class TwQt5 < TwFormula
     sha256 "92c9cfe701f9152f4b16219a04a523338d4b77bb0725a8adccc3fc72c9fb576f"
   end
 
+  # No need for `macchangeqt` and `macdeployqt` to depend on QtGui.
+  patch do
+    url "https://raw.githubusercontent.com/UniqMartin/patches/7ae51469/qt5/macdeployqt-no-gui.patch"
+    sha256 "8dbde755bbc37a655bf553a6385b2c2e70efa215357530f5fa0d147b099135a1"
+  end
+
   depends_on :xcode => :build
 
   def install
