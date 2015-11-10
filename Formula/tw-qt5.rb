@@ -53,53 +53,65 @@ class TwQt5 < TwFormula
     inreplace "qttools/src/src.pro", /\n    macdeployqt \\$/, ""
 
     # Disable all modules not used by TeXworks.
-    args = %W[
-      -prefix #{prefix}
-      -bindir #{libexec}/bin
-      -release
-      -confirm-license
-      -opensource
-      -c++11
-      -no-sql-sqlite
-      -no-qml-debug
-      -platform macx-clang
-      -system-zlib
-      -securetransport
-      -qt-libpng
-      -qt-libjpeg
-      -no-rpath
-      -no-openssl
-      -nomake examples
-      -nomake tests
-      -nomake tools
-      -skip qt3d
-      -skip qtactiveqt
-      -skip qtandroidextras
-      -skip qtcanvas3d
-      -skip qtconnectivity
-      -skip qtdeclarative
-      -skip qtenginio
-      -skip qtgraphicaleffects
-      -skip qtlocation
-      -skip qtmultimedia
-      -skip qtquick1
-      -skip qtquickcontrols
-      -skip qtsensors
-      -skip qtserialport
-      -skip qtsvg
-      -skip qtwayland
-      -skip qtwebchannel
-      -skip qtwebengine
-      -skip qtwebkit
-      -skip qtwebkit-examples
-      -skip qtwebsockets
-      -skip qtwinextras
-      -skip qtx11extras
-      -skip qtxmlpatterns
-      -no-dbus
-      -no-opengl
-      -arch x86_64
-    ]
+    args = [
+      # Section "Installation options".
+      %W[
+        -prefix #{prefix}
+        -bindir #{libexec}/bin
+      ],
+      # Section "Configure options".
+      %W[
+        -release
+        -opensource
+        -confirm-license
+        -no-sql-sqlite
+        -no-qml-debug
+      ],
+      # Section "Third Party Libraries".
+      %W[
+        -system-zlib
+        -qt-libpng
+        -qt-libjpeg
+        -no-openssl
+      ],
+      # Section "Additional options".
+      %W[
+        -nomake examples
+        -nomake tests
+        -nomake tools
+        -skip qt3d
+        -skip qtactiveqt
+        -skip qtandroidextras
+        -skip qtcanvas3d
+        -skip qtconnectivity
+        -skip qtdeclarative
+        -skip qtenginio
+        -skip qtgraphicaleffects
+        -skip qtlocation
+        -skip qtmultimedia
+        -skip qtquick1
+        -skip qtquickcontrols
+        -skip qtsensors
+        -skip qtserialport
+        -skip qtsvg
+        -skip qtwayland
+        -skip qtwebchannel
+        -skip qtwebengine
+        -skip qtwebkit
+        -skip qtwebkit-examples
+        -skip qtwebsockets
+        -skip qtwinextras
+        -skip qtx11extras
+        -skip qtxmlpatterns
+        -no-rpath
+        -verbose
+        -no-dbus
+      ],
+      # Section "MacOS/iOS options".
+      %W[
+        -securetransport
+      ],
+    ].flatten
 
     system "./configure", *args
     system "make"
