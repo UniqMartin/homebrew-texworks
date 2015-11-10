@@ -22,8 +22,8 @@ class TwQt5 < TwFormula
   # https://codereview.qt-project.org/#/c/126584/
   # Should land in the 5.5.2 and/or 5.6 release.
   patch do
-    url "https://gist.githubusercontent.com/UniqMartin/a54542d666be1983dc83/raw/f235dfb418c3d0d086c3baae520d538bae0b1c70/qtbug-47162.patch"
-    sha256 "e31df5d0c5f8a9e738823299cb6ed5f5951314a28d4a4f9f021f423963038432"
+    url "https://raw.githubusercontent.com/UniqMartin/patches/557a8bd4/qt5/qtbug-47162.patch"
+    sha256 "e410087f4209b692e6cee6eb7161d72f9b23d110d0a6214eb980ca169cef7102"
   end
 
   # Build issue: Fix install names with `-no-rpath` to be absolute paths.
