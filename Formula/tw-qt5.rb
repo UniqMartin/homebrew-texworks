@@ -5,16 +5,17 @@ require File.expand_path("../../lib/tw-formula", __FILE__)
 class TwQt5 < TwFormula
   desc "Version 5 of the Qt framework"
   homepage "https://www.qt.io/"
+  revision 1
 
   url "https://download.qt.io/official_releases/qt/5.5/5.5.1/single/qt-everywhere-opensource-src-5.5.1.tar.xz"
   mirror "https://www.mirrorservice.org/sites/download.qt-project.org/official_releases/qt/5.5/5.5.1/single/qt-everywhere-opensource-src-5.5.1.tar.xz"
   sha256 "6f028e63d4992be2b4a5526f2ef3bfa2fe28c5c757554b11d9e8d86189652518"
 
-  # Build error: Fix library paths with Xcode 7 for QtWebEngine.
-  # https://codereview.qt-project.org/#/c/122729/
+  # Build error: Fix library detection for QtWebEngine with Xcode 7.
+  # https://codereview.qt-project.org/#/c/127759/
   patch do
-    url "https://raw.githubusercontent.com/Homebrew/patches/2fcc1f8ec1df1c90785f4fa6632cebac68772fa9/qt5/el-capitan-2.diff"
-    sha256 "b8f04efd047eeed7cfd15b029ece20b5fe3c0960b74f7a5cb98bd36475463227"
+    url "https://raw.githubusercontent.com/UniqMartin/patches/557a8bd4/qt5/webengine-xcode7.patch"
+    sha256 "7bd46f8729fa2c20bc486ddc5586213ccf2fb9d307b3d4e82daa78a2553f59bc"
   end
 
   # Fix for qmake producing broken pkg-config files, affecting Poppler et al.
@@ -23,6 +24,13 @@ class TwQt5 < TwFormula
   patch do
     url "https://gist.githubusercontent.com/UniqMartin/a54542d666be1983dc83/raw/f235dfb418c3d0d086c3baae520d538bae0b1c70/qtbug-47162.patch"
     sha256 "e31df5d0c5f8a9e738823299cb6ed5f5951314a28d4a4f9f021f423963038432"
+  end
+
+  # Build issue: Fix install names with `-no-rpath` to be absolute paths.
+  # https://codereview.qt-project.org/#/c/138349
+  patch do
+    url "https://raw.githubusercontent.com/UniqMartin/patches/77d138fa/qt5/osx-no-rpath.patch"
+    sha256 "92c9cfe701f9152f4b16219a04a523338d4b77bb0725a8adccc3fc72c9fb576f"
   end
 
   depends_on :xcode => :build
@@ -101,7 +109,15 @@ class TwQt5 < TwFormula
     inreplace prefix/"mkspecs/qconfig.pri", /\n\n# pkgconfig/, ""
     inreplace prefix/"mkspecs/qconfig.pri", /\nPKG_CONFIG_.*=.*$/, ""
 
-    Pathname.glob("#{bin}/*.app") { |app| mv app, prefix }
+    # Move `*.app` bundles into `libexec` to expose them to `brew linkapps` and
+    # because we don't like having them in `bin`. Also add a `-qt5` suffix to
+    # avoid conflict with the `*.app` bundles provided by the `qt` formula.
+    # (Note: This move/rename breaks invocation of Assistant via the Help menu
+    # of both Designer and Linguist as that relies on Assistant being in `bin`.)
+    libexec.mkpath
+    Pathname.glob("#{bin}/*.app") do |app|
+      mv app, libexec/"#{app.basename(".app")}-qt5.app"
+    end
   end
 
   def caveats; <<-EOS.undent

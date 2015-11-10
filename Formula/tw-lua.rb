@@ -18,6 +18,9 @@ class TwLua < TwFormula
   end
 
   def install
+    # Subtitute formula prefix in `src/Makefile` for install name (dylib ID).
+    inreplace "src/Makefile", "@LUA_PREFIX@", prefix
+
     # Use our CC/CFLAGS to compile.
     inreplace "src/Makefile" do |s|
       s.remove_make_var! "CC"
@@ -86,7 +89,7 @@ index 8c9ee67..7f92407 100644
  $(LUA_A): $(BASE_O)
 -	$(AR) $@ $(BASE_O)
 -	$(RANLIB) $@
-+	$(CC) -dynamiclib -install_name HOMEBREW_PREFIX/lib/liblua.5.2.dylib \
++	$(CC) -dynamiclib -install_name @LUA_PREFIX@/lib/liblua.5.2.dylib \
 +		-compatibility_version 5.2 -current_version 5.2.4 \
 +		-o liblua.5.2.4.dylib $^
 

@@ -18,6 +18,7 @@ class TwFontconfig < TwFormula
   def install
     system "./configure", "--disable-dependency-tracking",
                           "--disable-silent-rules",
+                          "--enable-static",
                           "--with-add-fonts=/System/Library/Fonts,/Library/Fonts,~/Library/Fonts",
                           "--prefix=#{prefix}",
                           "--localstatedir=#{var}",
