@@ -18,6 +18,8 @@ class TwHunspell < TwFormula
     system "make"
     ENV.deparallelize
     system "make", "install"
+
+    pkgshare.install "tests"
   end
 
   def caveats; <<-EOS.undent
@@ -28,6 +30,11 @@ class TwHunspell < TwFormula
     https://wiki.openoffice.org/wiki/Dictionaries .
     EOS
   end
+
+  test do
+    cp_r "#{pkgshare}/tests/.", testpath
+    system "./test.sh"
+  end
 end
 
 __END__
@@ -35,7 +42,7 @@ __END__
 +++ src/tools/hunspell.cxx	2013-08-02 18:20:27.000000000 +0200
 @@ -28,7 +28,7 @@
  #ifdef WIN32
- 
+
  #define LIBDIR "C:\\Hunspell\\"
 -#define USEROOODIR "Application Data\\OpenOffice.org 2\\user\\wordbook"
 +#define USEROOODIR { "Application Data\\OpenOffice.org 2\\user\\wordbook" }
@@ -69,5 +76,5 @@ __END__
 +    if (HOME) path = add(add(add(add(path, HOME), DIRSEP), userooodir[i]), PATHSEP);
 +  }
  	path = add(path, OOODIR);
- 
+
  	if (showpath) {

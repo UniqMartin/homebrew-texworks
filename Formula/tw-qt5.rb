@@ -5,7 +5,7 @@ require File.expand_path("../../lib/tw-formula", __FILE__)
 class TwQt5 < TwFormula
   desc "Version 5 of the Qt framework"
   homepage "https://www.qt.io/"
-  revision 1
+  revision 2
 
   url "https://download.qt.io/official_releases/qt/5.5/5.5.1/single/qt-everywhere-opensource-src-5.5.1.tar.xz"
   mirror "https://www.mirrorservice.org/sites/download.qt-project.org/official_releases/qt/5.5/5.5.1/single/qt-everywhere-opensource-src-5.5.1.tar.xz"
@@ -31,6 +31,16 @@ class TwQt5 < TwFormula
   patch do
     url "https://raw.githubusercontent.com/UniqMartin/patches/77d138fa/qt5/osx-no-rpath.patch"
     sha256 "92c9cfe701f9152f4b16219a04a523338d4b77bb0725a8adccc3fc72c9fb576f"
+  end
+
+  # Fixes for Secure Transport in QtWebKit
+  # https://codereview.qt-project.org/#/c/139967/
+  # https://codereview.qt-project.org/#/c/139968/
+  # https://codereview.qt-project.org/#/c/139970/
+  # Should land in the 5.5.2 and/or 5.6 release.
+  patch do
+    url "https://gist.githubusercontent.com/The-Compiler/8202f92fff70da39353a/raw/884c3bef4d272d25d7d7202be99c3940248151ee/qt5.5-securetransport-qtwebkit.patch"
+    sha256 "c3302de2e23e74a99e62f22527e0edee5539b2e18d34c05e70075490ba7b3613"
   end
 
   # No need for `macchangeqt` and `macdeployqt` to depend on QtGui.

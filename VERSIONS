@@ -1,8 +1,8 @@
 tw-fontconfig   base=fontconfig  commit=28643e4711fb5a0f3eb152f4a2023bf440d47f0f date=2015-11-02T17:45:50+00:00
 tw-freetype     base=freetype    commit=b48dd77da9ddfa540181c0a7fdf61684ee4b56b9 date=2015-09-11T14:57:58+01:00
-tw-hunspell     base=hunspell    commit=8ba134eda537d2cee7daa7ebdd9f728389d9c53e date=2015-08-03T13:55:31+01:00
-tw-jpeg         base=jpeg        commit=df198f68926811b62d0abf7a46dca1db480be4e6 date=2015-09-11T14:58:33+01:00
-tw-libpng       base=libpng      commit=e26ef515d3ce2ffdc2c7a9c178186f36740301b3 date=2015-09-11T14:58:45+01:00
+tw-hunspell     base=hunspell    commit=2bd76ddd19a26c489f65ecc522b55eec77922e4d date=2015-11-01T16:28:28-05:00
+tw-jpeg         base=jpeg        commit=8410752eda8f3e19bd699e155530c1fec24062cf date=2015-11-19T16:45:31+01:00
+tw-libpng       base=libpng      commit=cd8ad39cff63224a88edb1f6903a59ba7cf0cf8a date=2015-11-15T04:28:42+00:00
 tw-libtiff      base=libtiff     commit=3c21146e63df2b863c2abc3805f8ec7a1134f013 date=2015-09-18T15:10:23+01:00
 tw-little-cms2  base=little-cms2 commit=21765a2142d255d0ed29035bd9685323fe3c2007 date=2015-09-13T09:52:40+01:00
 tw-lua          base=lua         commit=b85c336836342da723124ced7a0d17f98a9823fe date=2015-10-18T01:24:27+02:00
@@ -12,4 +12,4 @@ tw-poppler-data base=poppler     commit=5f01284536f12143d5288933e463dd227e62bfb0
 tw-poppler-qt4  base=poppler     commit=5f01284536f12143d5288933e463dd227e62bfb0 date=2015-10-22T15:36:08+01:00
 tw-poppler-qt5  base=poppler     commit=5f01284536f12143d5288933e463dd227e62bfb0 date=2015-10-22T15:36:08+01:00
 tw-qt4          base=qt          commit=3b41fa121b8c13a6de28729bc2031698d49f4e7a date=2015-10-04T04:26:20+01:00
-tw-qt5          base=qt5         commit=196f9200f0efff0c572d68aae42d051e3f166d43 date=2015-11-08T14:19:04+00:00
+tw-qt5          base=qt5         commit=f802822b0fa35ad362aebd0101ccf83a638bed37 date=2015-11-16T17:32:51+01:00
