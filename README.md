@@ -29,4 +29,4 @@ This project is a work in progress. As it gets closer to reaching its goals, its
 
 ## License
 
-Code is under the [BSD 2 Clause (NetBSD) license](LICENSE.txt). Some files are adapted from [Homebrew](https://github.com/Homebrew/homebrew) as detailed in the license file.
+Code is under the [BSD 2 Clause (NetBSD) license](LICENSE.txt).
